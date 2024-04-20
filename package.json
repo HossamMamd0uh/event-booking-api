@@ -21,12 +21,15 @@
   },
   "homepage": "https://gitlab.com/HossamMd0uh/event-booking-api#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "joi": "^17.12.3",
-    "mysql2": "^3.9.6"
+    "mysql2": "^3.9.6",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",

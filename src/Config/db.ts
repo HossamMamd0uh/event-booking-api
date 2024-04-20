@@ -1,10 +1,17 @@
-import mysql from 'mysql2/promise';
-import { config } from './config';
-const pool = mysql.createPool({
-    host: config.dbHost,
-    user: config.dbUser,
-    password: config.dbPass,
-    database: config.dbName,
+import { config } from "./config";
+import { DataSource } from "typeorm";
+import { User } from "../models/user";
+
+const AppDataSource = new DataSource({
+  type: "mysql",
+  host: config.dbHost,
+  port: 3306,
+  username: config.dbUser,
+  password: config.dbPass,
+  database: config.dbName,
+  entities: [User],
+  synchronize: true,
+  logging: false,
 });
 
-export default pool;
+export default AppDataSource;
