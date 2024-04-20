@@ -1,32 +1,50 @@
-import express from 'express';
-import pool from '../Config/db';
-import {config} from '../Config/config';
-
+import express from "express";
+import AppDataSource from "../config/db";
+import { config } from "../config/config";
+import userRoutes from "../routes/userRoutes";
 const app = express();
 
 async function checkDatabaseConnection() {
-    try {
-        const connection = await pool.getConnection();
-        await connection.query('SELECT 1');
-        connection.release();
-        console.log('Database connection successful.');
-        return true;
-    } catch (err) {
-        console.error('Unable to connect to the database:', err);
-        return false;
-    }
+  try {
+    await AppDataSource.initialize()
+      .then(() => {
+        console.log("Data Source has been initialized!");
+      })
+      .catch((err) => {
+        console.error("Error during Data Source initialization", err);
+      });
+    return true;
+  } catch (err) {
+    console.error("Unable to connect to the database:", err);
+    return false;
+  }
 }
 
-async function startServer() {
-    if (await checkDatabaseConnection()) {
-        app.listen(config.appPort, () => {
-            console.log('App is listening on port 8000');
-        });
-    } else {
-        console.log('Fix database connection before starting the server.');
-    }
+function initializeApp() {
+  try {
+    app.use(express.json());
+    app.use("/users", userRoutes);
+  } catch (err) {
+    console.error("Error initializing app:", err);
+  }
 }
 
-startServer();
+function startServer(port) {
+  app.listen(port, () => {
+    console.log(`App is listening on port ${port}`);
+  });
+}
+
+async function start() {
+  try {
+    await checkDatabaseConnection();
+    initializeApp();
+    startServer(config.appPort);
+  } catch (error) {
+    console.error("Error starting server:", error);
+  }
+}
+
+start();
 
 export default app;
