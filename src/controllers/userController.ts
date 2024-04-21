@@ -31,3 +31,12 @@ export const getUserById = async (req: Request, res: Response) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+export const getUsersTickets = async (req: Request, res: Response) => {
+    try {
+        const tickets = await userService.getUsersTickets(parseInt(req.params.userId));
+        res.json(tickets);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}

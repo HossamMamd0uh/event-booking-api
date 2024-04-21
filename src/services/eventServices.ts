@@ -1,6 +1,5 @@
 import { Event } from "../models/event";
 import { Category } from "../models/category";
-import * as filterHelpers from "../helpers/eventHelpers";
 import { validate } from 'class-validator';
 import { CreateEventDTO } from '../dto/createEvent.dto';
 interface EventDTO {
@@ -81,9 +80,8 @@ export const createEvent = async (eventData: CreateEventDTO): Promise<Event> => 
 };
 
 export const filterEvents = async (query: any): Promise<EventDTO[]> => {
-  const filtersQuery = filterHelpers.filterExtractor(query);
   const events = await Event.createQueryBuilder("event")
-    .where(filtersQuery)
+    .where(query)
     .leftJoin("event.categoryId", "category")
     .select([
       "event.id",

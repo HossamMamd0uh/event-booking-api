@@ -20,3 +20,17 @@ export const createUser = async (userData: any) => {
     return newUser;
 };
 
+export const getUsersTickets = async (userId: number) => {
+    const tickets = await User.createQueryBuilder('user')
+    .leftJoinAndSelect('user.tickets', 'ticket')
+    .leftJoinAndSelect('ticket.event', 'event') 
+    .where('user.id = :id', {id: userId})
+    .select([
+        'user.id', 'user.name', 'user.email',
+        'ticket.id', 'ticket.number', 'ticket.price', 'ticket.isReserved', 'ticket.reservedAt',
+        'event.id', 'event.name', 'event.date'
+    ])
+    .getMany();
+    return tickets;
+}
+

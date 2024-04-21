@@ -4,6 +4,7 @@ import { config } from "../config/config";
 import userRoutes from "../routes/userRoutes";
 import eventRoutes from "../routes/eventRoutes";
 import categoryRoutes from "../routes/categoryRoutes";
+import ticketRoutes from "../routes/ticketRoutes";
 const app = express();
 
 async function checkDatabaseConnection() {
@@ -28,6 +29,7 @@ function initializeApp() {
     app.use("/users", userRoutes);
     app.use("/events", eventRoutes);
     app.use("/categories", categoryRoutes);
+    app.use("/tickets", ticketRoutes);
   } catch (err) {
     console.error("Error initializing app:", err);
   }

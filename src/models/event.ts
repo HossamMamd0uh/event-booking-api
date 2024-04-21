@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Category } from './category';
+import { Ticket } from './ticket';
 import { Max, IsInt } from 'class-validator';
 
 @Entity()
@@ -31,6 +32,9 @@ export class Event extends BaseEntity {
     @ManyToOne(() => Category, category => category.events, { nullable: false })
     @JoinColumn({ name: 'categoryId' })
     categoryId: Category;
+
+    @OneToMany(() => Ticket, ticket  => ticket.event)
+    tickets: Ticket[];
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     createdAt: Date;
