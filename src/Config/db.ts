@@ -1,6 +1,8 @@
 import { config } from "./config";
 import { DataSource } from "typeorm";
 import { User } from "../models/user";
+import { Event } from "../models/event";
+import { Category } from "../models/category";
 
 const AppDataSource = new DataSource({
   type: "mysql",
@@ -9,7 +11,7 @@ const AppDataSource = new DataSource({
   username: config.dbUser,
   password: config.dbPass,
   database: config.dbName,
-  entities: [User],
+  entities: [User, Event, Category],
   synchronize: true,
   logging: false,
 });
