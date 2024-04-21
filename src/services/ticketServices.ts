@@ -24,7 +24,6 @@ export const reserveTicket = async (id: number, userId: number) => {
     if (!ticket) {
         throw new Error('Ticket not found');
     }
-    console.log(user, ticket);
     Ticket.update(id, { isReserved: true, reservedAt: new Date(), user: user});
 };
 
