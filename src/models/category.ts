@@ -12,7 +12,7 @@ export class Category extends BaseEntity {
     })
     name: string;
 
-    @OneToMany(() => Event, event => event.category)
+    @OneToMany(() => Event, event => event.categoryId)
     events: Event[];
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

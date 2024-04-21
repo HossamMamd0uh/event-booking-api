@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as eventService from '../services/eventServices';
+import { plainToInstance } from 'class-transformer';
+import { CreateEventDTO } from '../dto/createEvent.dto';
 
 export const getAllEvents = async (req: Request, res: Response) => {
     try {
@@ -12,7 +14,8 @@ export const getAllEvents = async (req: Request, res: Response) => {
 
 export const createEvent = async (req: Request, res: Response) => {
     try {
-        await eventService.createEvent(req.body);
+        const eventData = plainToInstance(CreateEventDTO, req.body);
+        await eventService.createEvent(eventData);
         res.status(201).json({ message: 'Event created'})
     } catch (err) {
         console.log(err);

@@ -1,23 +1,99 @@
-import { Event } from '../models/event';
-import * as filterHelpers from '../helpers/eventHelpers';
-export const getAllEvents = async () => {
-    const events = Event.find();
-    return events;
+import { Event } from "../models/event";
+import { Category } from "../models/category";
+import * as filterHelpers from "../helpers/eventHelpers";
+import { validate } from 'class-validator';
+import { CreateEventDTO } from '../dto/createEvent.dto';
+interface EventDTO {
+  id: number;
+  name: string;
+  date: Date;
+  description: string;
+  category: string;
+}
+
+
+// Helper function to format event data
+function formatEventData(data: any): EventDTO {
+  return {
+    id: data.event_id,
+    name: data.event_name,
+    date: data.event_date,
+    description: data.event_description,
+    category: data.category_name,
+  };
+}
+
+export const getAllEvents = async (): Promise<EventDTO[]> => {
+  const events = await Event.createQueryBuilder("event")
+    .leftJoin("event.categoryId", "category")
+    .select([
+      "event.id",
+      "event.name",
+      "event.date",
+      "event.availableAttendeesCount",
+      "event.description",
+      "category.name",
+    ])
+    .getRawMany();
+
+  return events.map(formatEventData);
 };
 
-export const getEventById = async (id: number) => {
-    const event = Event.findOneBy({id: id});
+export const getEventById = async (id: number): Promise<EventDTO | null> => {
+  const event = await Event.createQueryBuilder("event")
+    .leftJoin("event.categoryId", "category")
+    .select([
+      "event.id",
+      "event.name",
+      "event.date",
+      "event.description",
+      "event.availableAttendeesCount",
+      "category.name",
+    ])
+    .where("event.id = :id", { id: id })
+    .getRawOne();
+
+  return event ? formatEventData(event) : null;
+};
+
+export const createEvent = async (eventData: CreateEventDTO): Promise<Event> => {
+    
+    // Validate event data
+    const errors = await validate(eventData);
+    if (errors.length > 0) {
+        throw new Error(errors.map(e => Object.values(e.constraints).join(', ')).join('; '));
+    }
+
+    // Validate the category existence
+    const category = await Category.findOneBy({ id: eventData.category });
+    if (!category) {
+        throw new Error('Category not found');
+    }
+
+    const event = new Event();
+    event.name = eventData.name;
+    event.description = eventData.description;
+    event.availableAttendeesCount = eventData.availableAttendeesCount;
+    event.date = eventData.date;
+    event.categoryId = category; 
+    await event.save();
     return event;
-}
-
-export const createEvent = async (eventData: any) => {
-    const newEvent = Event.create(eventData);
-    await Event.save(newEvent);
-    return newEvent;
 };
 
-export const filterEvents = async (query: any) => {
-    const filtersQuery = filterHelpers.filterExtractor(query);
-    const events = Event.find(filtersQuery);
-    return events;
-}
+export const filterEvents = async (query: any): Promise<EventDTO[]> => {
+  const filtersQuery = filterHelpers.filterExtractor(query);
+  const events = await Event.createQueryBuilder("event")
+    .where(filtersQuery)
+    .leftJoin("event.categoryId", "category")
+    .select([
+      "event.id",
+      "event.name",
+      "event.date",
+      "event.description",
+      "event.availableAttendeesCount",
+      "category.name",
+    ])
+    .getRawMany();
+
+  return events.map(formatEventData);
+};
