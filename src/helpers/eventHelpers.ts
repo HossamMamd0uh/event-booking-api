@@ -1,13 +1,8 @@
 export const filterExtractor = (query: any) => {
-    let filteredQuery = {where: {}};
+    const filteredQuery = {};
     for (const key in query) {
         if (query[key] !== '') {
-            if (key === 'category') {
-                filteredQuery.where[key] = { id: query[key] };
-            }
-            else{
-            filteredQuery.where[key] = query[key];}
-        }
+            filteredQuery[key] = query[key];}
     }
     return filteredQuery;
 };
