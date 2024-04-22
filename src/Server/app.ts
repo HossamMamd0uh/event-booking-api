@@ -6,6 +6,7 @@ import eventRoutes from "../routes/eventRoutes";
 import categoryRoutes from "../routes/categoryRoutes";
 import ticketRoutes from "../routes/ticketRoutes";
 import authRoutes from "../routes/authRoutes";
+import {scheduleNotifications} from "../helpers/notificationsHelpers";
 const app = express();
 
 async function checkDatabaseConnection() {
@@ -37,7 +38,8 @@ function initializeApp() {
   }
 }
 
-function startServer(port) {
+function startServer(port: string) {
+  scheduleNotifications();
   app.listen(port, () => {
     console.log(`App is listening on port ${port}`);
   });

@@ -4,6 +4,7 @@ import { User } from "../models/user";
 import { Event } from "../models/event";
 import { Category } from "../models/category";
 import { Ticket } from "../models/ticket";
+import { Log } from "../models/log";
 
 const AppDataSource = new DataSource({
   type: "mysql",
@@ -12,7 +13,7 @@ const AppDataSource = new DataSource({
   username: config.dbUser,
   password: config.dbPass,
   database: config.dbName,
-  entities: [User, Event, Category, Ticket],
+  entities: [User, Event, Category, Ticket, Log],
   synchronize: true,
   logging: false,
 });
