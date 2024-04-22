@@ -28,7 +28,10 @@
     "express": "^4.19.2",
     "joi": "^17.12.3",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
     "mysql2": "^3.9.6",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.13",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
@@ -36,6 +39,8 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.7",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^6.4.14",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

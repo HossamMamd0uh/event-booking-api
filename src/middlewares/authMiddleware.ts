@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { config } from "../config/config";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
@@ -8,7 +9,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         return res.status(401).json({ message: 'Unauthorized' });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+        const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
         req.body.userId = decoded.id;
         next();
     } catch (err) {
