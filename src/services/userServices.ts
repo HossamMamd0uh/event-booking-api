@@ -1,23 +1,47 @@
 import { User } from '../models/user';
 import * as userHelpers from '../helpers/userHelpers';
 
-export const getAllUsers = async () => {
-    const users = User.find();
-    return users;
+interface UserDTO {
+    id: number;
+    name: string;
+    email: string;
+}
+
+function formatUser(user: User): UserDTO {
+    return {
+        id: user.id,
+        name: user.name,
+        email: user.email
+    };
+}
+
+export const getAllUsers = async (): Promise<UserDTO[]> => {
+    const users: UserDTO[] = await User.find();
+    return users.map(formatUser);
 };
 
-export const getUserById = async (id: number) => {
-    const user = User.findOneBy({id: id});
-    return user;
+export const getUserById = async (id: number): Promise<UserDTO | null> => {
+    const user = await User.findOneBy({id: id});
+    return user ? formatUser(user) : null;
 }
 
 export const createUser = async (userData: any) => {
-    userHelpers.validateUserData(userData);
-    const hashedPassword = await userHelpers.hashPassword(userData.password);
-    userData.password = hashedPassword;
-    const newUser = User.create(userData);
-    await User.save(newUser);
-    return newUser;
+    try{
+        const userValidations = userHelpers.validateUserData(userData);
+        if (userValidations !== null) {
+            throw new Error(userValidations);
+        }
+        else{
+        const hashedPassword = await userHelpers.hashPassword(userData.password);
+        userData.password = hashedPassword;
+        const newUser = User.create(userData);
+        await User.save(newUser);
+        return newUser;}
+    }
+    catch(err) {
+        throw new Error(err);
+    }
+
 };
 
 export const getUsersTickets = async (userId: number) => {

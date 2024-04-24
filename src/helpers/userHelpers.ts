@@ -1,22 +1,23 @@
 import bcrypt from 'bcrypt';
 
 const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailRegex.test(String(email).toLowerCase());
 };
 
 const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
     return passwordRegex.test(password);
 };
 
 export const validateUserData = (userData: any) => {
     if (!validateEmail(userData.email)) {
-        throw new Error('Invalid email');
+        return 'Invalid email';
     }
     if (!validatePassword(userData.password)) {
-        throw new Error('Invalid password');
+        return 'Invalid password';
     }
+    return null;
 };
 
 export const hashPassword = (password: string) => {
