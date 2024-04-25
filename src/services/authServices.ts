@@ -1,6 +1,7 @@
 import { User } from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { config } from '../config/config';
 
 export const login = async (email: string, password: string) => {
     const user = await User.findOneBy({ email: email });
@@ -11,6 +12,6 @@ export const login = async (email: string, password: string) => {
     if (!isPasswordCorrect) {
         throw new Error('Incorrect password');
     }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user.id }, config.jwtSecret);
     return {token, user};
 }

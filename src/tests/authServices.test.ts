@@ -2,6 +2,7 @@ import { User } from '../models/user';
 import * as authServices from '../services/authServices';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { config } from '../config/config';
 jest.mock('../models/user', () => ({
     User: {
       findOneBy: jest.fn()
@@ -23,7 +24,7 @@ jest.mock('../models/user', () => ({
         password: "$2b$10$examplehashedpassword"
       };
       const mockToken = "generated.jwt.token";
-      process.env.JWT_SECRET = "secret";
+
       (User.findOneBy as jest.Mock).mockResolvedValue(mockUser);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       (jwt.sign as jest.Mock).mockReturnValue(mockToken);
@@ -32,7 +33,7 @@ jest.mock('../models/user', () => ({
   
       expect(User.findOneBy).toHaveBeenCalledWith({ email: "test@example.com" });
       expect(bcrypt.compare).toHaveBeenCalledWith("password123", mockUser.password);
-      expect(jwt.sign).toHaveBeenCalledWith({ id: mockUser.id }, process.env.JWT_SECRET);
+      expect(jwt.sign).toHaveBeenCalledWith({ id: mockUser.id }, config.jwtSecret);
       expect(result).toEqual({ token: mockToken, user: mockUser });
     });
     it("should throw an error if the password is incorrect", async () => {
