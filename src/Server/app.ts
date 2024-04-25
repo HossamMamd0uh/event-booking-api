@@ -7,6 +7,9 @@ import categoryRoutes from "../routes/categoryRoutes";
 import ticketRoutes from "../routes/ticketRoutes";
 import authRoutes from "../routes/authRoutes";
 import {scheduleNotifications} from "../helpers/notificationsHelpers";
+import swaggerUi from 'swagger-ui-express';
+import {swaggerSpec} from '../common/swaggerConfig';
+
 const app = express();
 
 async function checkDatabaseConnection() {
@@ -28,6 +31,7 @@ async function checkDatabaseConnection() {
 function initializeApp() {
   try {
     app.use(express.json());
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     app.get("/health", (req, res) => {
       res.send({"status": "ok"});
     });
