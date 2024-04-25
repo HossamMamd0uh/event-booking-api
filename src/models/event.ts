@@ -26,6 +26,15 @@ export class Event extends BaseEntity {
     @Max(1000)
     availableAttendeesCount: number;
 
+    @Column({
+        nullable: false,
+        type: "int",
+        default: 0
+    })
+    @IsInt()
+    @Max(1000)
+    currentAttendeesCount: number;
+
     @Column({type: 'datetime', nullable: false})
     date: Date;
 
