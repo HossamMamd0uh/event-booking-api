@@ -8,6 +8,7 @@ interface EventDTO {
   date: Date;
   description: string;
   category: string;
+  availableAttendeesCount: number;
 }
 
 
@@ -19,6 +20,7 @@ function formatEventData(data: any): EventDTO {
     date: data.event_date,
     description: data.event_description,
     category: data.category_name,
+    availableAttendeesCount: data.event_availableAttendeesCount,
   };
 }
 
