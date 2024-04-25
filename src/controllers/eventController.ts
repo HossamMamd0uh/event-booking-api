@@ -18,7 +18,6 @@ export const createEvent = async (req: Request, res: Response) => {
         await eventService.createEvent(eventData);
         res.status(201).json({ message: 'Event created'})
     } catch (err) {
-        console.log(err);
         res.status(400).json({ message: 'Bad request' });
     }
 };
