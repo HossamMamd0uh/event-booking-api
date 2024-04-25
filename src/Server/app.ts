@@ -28,6 +28,9 @@ async function checkDatabaseConnection() {
 function initializeApp() {
   try {
     app.use(express.json());
+    app.get("/health", (req, res) => {
+      res.send({"status": "ok"});
+    });
     app.use("/users", userRoutes);
     app.use("/events", eventRoutes);
     app.use("/categories", categoryRoutes);
