@@ -9,6 +9,7 @@ interface EventDTO {
   description: string;
   category: string;
   availableAttendeesCount: number;
+  currentAttendeesCount: number;
 }
 
 
@@ -21,6 +22,7 @@ function formatEventData(data: any): EventDTO {
     description: data.event_description,
     category: data.category_name,
     availableAttendeesCount: data.event_availableAttendeesCount,
+    currentAttendeesCount: data.event_currentAttendeesCount,
   };
 }
 
@@ -33,6 +35,7 @@ export const getAllEvents = async (): Promise<EventDTO[]> => {
       "event.date",
       "event.availableAttendeesCount",
       "event.description",
+      "event.currentAttendeesCount",
       "category.name",
     ])
     .getRawMany();
@@ -49,6 +52,7 @@ export const getEventById = async (id: number): Promise<EventDTO | null> => {
       "event.date",
       "event.description",
       "event.availableAttendeesCount",
+      "event.currentAttendeesCount",
       "category.name",
     ])
     .where("event.id = :id", { id: id })
@@ -91,6 +95,7 @@ export const filterEvents = async (query: any): Promise<EventDTO[]> => {
       "event.date",
       "event.description",
       "event.availableAttendeesCount",
+      "event.currentAttendeesCount",
       "category.name",
     ])
     .getRawMany();

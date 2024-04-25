@@ -27,6 +27,7 @@ jest.mock("../models/event", () => ({
       name: "",
       description: "",
       availableAttendeesCount: 0,
+      currentAttendeesCount: 0,
       date: new Date(),
       categoryId: null,
     };
@@ -71,6 +72,7 @@ describe("EventService", () => {
         "event.date",
         "event.availableAttendeesCount",
         "event.description",
+        "event.currentAttendeesCount",
         "category.name",
       ]);
       expect(queryBuilder.getRawMany).toHaveBeenCalled();
@@ -97,6 +99,7 @@ describe("EventService", () => {
             "event.date",
             "event.availableAttendeesCount",
             "event.description",
+            "event.currentAttendeesCount",
             "category.name",
         ]);
         expect(queryBuilder.getRawMany).toHaveBeenCalled();
@@ -111,6 +114,7 @@ describe("EventService", () => {
         event_name: "Event 1",
         event_date: new Date("2022-01-01 09:00:00"),
         event_availableAttendeesCount: 100,
+        event_currentAttendeesCount: 50,
         event_description: "Event 1 description",
         category_name: "Game",
       };
@@ -119,6 +123,7 @@ describe("EventService", () => {
         name: mockEvent.event_name,
         date: mockEvent.event_date,
         availableAttendeesCount: mockEvent.event_availableAttendeesCount,
+        currentAttendeesCount: mockEvent.event_currentAttendeesCount,
         description: mockEvent.event_description,
         category: mockEvent.category_name,
       };
@@ -144,6 +149,7 @@ describe("EventService", () => {
         "event.date",
         "event.description",
         "event.availableAttendeesCount",
+        "event.currentAttendeesCount",
         "category.name",
       ]);
       expect(queryBuilder.where).toHaveBeenCalledWith("event.id = :id", {
@@ -173,6 +179,7 @@ describe("EventService", () => {
             "event.date",
             "event.description",
             "event.availableAttendeesCount",
+            "event.currentAttendeesCount",
             "category.name",
         ]);
         expect(queryBuilder.where).toHaveBeenCalledWith("event.id = :id", { id: eventId });
@@ -288,6 +295,7 @@ describe("EventService", () => {
             "event.date",
             "event.description",
             "event.availableAttendeesCount",
+            "event.currentAttendeesCount",
             "category.name"
         ]);
         expect(queryBuilder.where).toHaveBeenCalledWith(query);
