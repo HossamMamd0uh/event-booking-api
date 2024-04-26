@@ -22,5 +22,11 @@ RUN npm run build
 # Expose port 8000 (or the port your app runs on)
 EXPOSE 8000
 
+# Copy the wait-for-it.sh script into the image
+COPY wait-for-it.sh /wait-for-it.sh
+
+# Make the script executable
+RUN chmod +x /wait-for-it.sh
+
 # Start the application
 CMD [ "npm", "start" ]
