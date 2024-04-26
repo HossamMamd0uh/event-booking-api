@@ -66,9 +66,10 @@ This project uses swagger documentation, so when the project is running, you can
 
 
 ## Further Explanation
-- The project uses a MySQL database to store data. You don't need to create the database manually, as the project will create the necessary tables when it starts.
+- The project uses a MySQL database to store data. You don't need to create the database manually, as the project will create it when you start using it.
 - The project uses TypeORM as an ORM to facilitate interaction with the database.
 - The project doesn't need seed data to be up, you can start by using the create user endpoint to create a user and go on.
+- The project uses wait-for-it.sh script to ensure that the MySQL database is up before starting the server. This is necessary to avoid connection issues with the database in case of running it using Docker.
 
 
 

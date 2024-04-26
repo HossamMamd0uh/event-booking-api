@@ -9,8 +9,31 @@ import authRoutes from "../routes/authRoutes";
 import {scheduleNotifications} from "../helpers/notificationsHelpers";
 import swaggerUi from 'swagger-ui-express';
 import {swaggerSpec} from '../common/swaggerConfig';
+import * as mysql from 'mysql2';
 
 const app = express();
+
+async function initDB() {
+  return new Promise<void>((resolve, reject) => {
+    const connection = mysql.createConnection({
+      host: config.dbHost,
+      user: config.dbUser,
+      password: config.dbPass,
+    });
+    connection.connect();
+    connection.query(`CREATE DATABASE IF NOT EXISTS ${config.dbName}`, (err, result) => {
+      if (err) {
+        console.error("Error creatin database:", err);
+        reject(err);
+      } else {
+        console.log("Database initiated successfully");
+        resolve();
+      }
+    });
+    connection.end();
+  });
+}
+
 
 async function checkDatabaseConnection() {
   try {
@@ -54,6 +77,7 @@ function startServer(port: string) {
 
 async function start() {
   try {
+    await initDB();
     await checkDatabaseConnection();
     initializeApp();
     startServer(config.appPort);
