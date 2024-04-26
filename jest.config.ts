@@ -3,7 +3,7 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  // Add other configuration settings as needed
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };
 
 export default config;
