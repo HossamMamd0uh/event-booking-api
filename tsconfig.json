@@ -4,6 +4,7 @@
       "module": "commonjs",
       "esModuleInterop": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
+      "outDir": "./dist"
     }
 }
